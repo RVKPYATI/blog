@@ -22,7 +22,7 @@ app.use("/api-doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 // CORS
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "http://178.236.246.165:5173",
     credentials: true,
   })
 );

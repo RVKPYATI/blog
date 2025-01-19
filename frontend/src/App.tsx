@@ -7,7 +7,7 @@ import PostList from "./components/PostList";
 import Register from "./components/Register";
 import { Layout } from "./components/Layout";
 import { getCookie } from "./utils/cookies";
-import EditPost from "./components/EditPOst";
+import EditPost from "./components/EditPost";
 
 function App() {
   const token = getCookie("token");

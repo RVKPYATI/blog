@@ -1,0 +1,742 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Blog",
+    "description": "My blog API",
+    "version": "1.0.0"
+  },
+  "host": "localhost:5000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/api/auth/register": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Регистрация нового пользователя",
+        "description": "Роут для регистрации нового пользователя",
+        "parameters": [
+          {
+            "name": "User",
+            "in": "body",
+            "description": "Данные для регистрации пользователя",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "example": "username"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "password"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Пользователь успешно зарегистрирован",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "user.id"
+                },
+                "username": {
+                  "type": "string",
+                  "example": "user.username"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректные данные для регистрации"
+          },
+          "500": {
+            "description": "Ошибка сервера",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Ошибка регистрации"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Авторизация пользователя",
+        "description": "Роут для авторизации пользователя",
+        "parameters": [
+          {
+            "name": "User",
+            "in": "body",
+            "description": "Данные для авторизации пользователя",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "example": "username"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "password"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Пользователь успешно авторизовался",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string",
+                  "example": "jwttoken"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Неверные учетные данные",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Неверные учетные данные"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Ошибка сервера",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Ошибка авторизации"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/posts/": {
+      "post": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "Создание нового поста",
+        "description": "Роут создание нового поста",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "User",
+            "in": "body",
+            "description": "Данные для асоздание нового поста",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "message text"
+                },
+                "mediaUrl": {
+                  "type": "string",
+                  "example": "mediaUrl"
+                },
+                "userId": {
+                  "type": "string",
+                  "example": "userId"
+                },
+                "username": {
+                  "type": "string",
+                  "example": "username"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Пост создался",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "message text"
+                },
+                "mediaUrl": {
+                  "type": "string",
+                  "example": "mediaUrl"
+                },
+                "userId": {
+                  "type": "string",
+                  "example": "userId"
+                },
+                "username": {
+                  "type": "string",
+                  "example": "username"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Ошибка создания записи",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Ошибка создания записи"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "Получение всех записей",
+        "description": "Роут получение всех записей",
+        "responses": {
+          "200": {
+            "description": "Список постов",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 22
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Это сообщение от боба"
+                  },
+                  "mediaUrl": {},
+                  "date": {
+                    "type": "string",
+                    "example": "2025-01-19T05:23:52.409Z"
+                  },
+                  "userId": {
+                    "type": "number",
+                    "example": 15
+                  },
+                  "username": {
+                    "type": "string",
+                    "example": "bob"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "example": "2025-01-19T05:23:52.409Z"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "example": "2025-01-19T05:23:52.409Z"
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Ошибка получения записей",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Ошибка получения записей"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/posts/{id}": {
+      "get": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "Получение записи по ID",
+        "description": "Роут получение записи по ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Пост по ID",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 22
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Это сообщение от боба"
+                },
+                "mediaUrl": {},
+                "date": {
+                  "type": "string",
+                  "example": "2025-01-19T05:23:52.409Z"
+                },
+                "userId": {
+                  "type": "number",
+                  "example": 15
+                },
+                "username": {
+                  "type": "string",
+                  "example": "bob"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "example": "2025-01-19T05:23:52.409Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "example": "2025-01-19T05:23:52.409Z"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Запись не найдена",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Запись не найдена"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Ошибка получения записи",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Ошибка получения записи"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "Редактирование записи по ID",
+        "description": "Роут для редактирования записи по ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "Post",
+            "in": "body",
+            "description": "Данные для редактирования записи",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "message text"
+                },
+                "mediaUrl": {
+                  "type": "string",
+                  "example": "mediaUrl"
+                },
+                "userId": {
+                  "type": "string",
+                  "example": "userId"
+                },
+                "username": {
+                  "type": "string",
+                  "example": "username"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Пост по ID",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 22
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Это сообщение от боба"
+                },
+                "mediaUrl": {},
+                "date": {
+                  "type": "string",
+                  "example": "2025-01-19T05:23:52.409Z"
+                },
+                "userId": {
+                  "type": "number",
+                  "example": 15
+                },
+                "username": {
+                  "type": "string",
+                  "example": "bob"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "example": "2025-01-19T05:23:52.409Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "example": "2025-01-19T05:23:52.409Z"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Нет доступа для редактирования этой записи",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Нет доступа для редактирования этой записи"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Запись не найдена",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Запись не найдена"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Ошибка редактирования записи",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Ошибка редактирования записи"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "Удаление записи по ID",
+        "description": "Роут для удаления записи по ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "Post",
+            "in": "body",
+            "description": "Данные для удаления записи",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "postid"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Запись удалена"
+          },
+          "403": {
+            "description": "Нет доступа для редактирования этой записи",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Нет доступа для редактирования этой записи"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Запись не найдена",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Запись не найдена"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Ошибка удаления записи",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Ошибка удаления записи"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Post": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "allowNull": {
+              "type": "boolean",
+              "example": false
+            }
+          }
+        },
+        "mediaUrl": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            }
+          }
+        },
+        "date": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "defaultValue": {
+              "type": "function"
+            }
+          }
+        },
+        "userId": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "references": {
+              "type": "object",
+              "properties": {
+                "model": {
+                  "type": "string",
+                  "example": "users"
+                },
+                "key": {
+                  "type": "string",
+                  "example": "id"
+                }
+              }
+            }
+          }
+        },
+        "username": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "allowNull": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        }
+      }
+    },
+    "Posts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/models/Post"
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "allowNull": {
+              "type": "boolean",
+              "example": false
+            },
+            "unique": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "password": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "allowNull": {
+              "type": "boolean",
+              "example": false
+            }
+          }
+        }
+      }
+    }
+  }
+}
